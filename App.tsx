@@ -14,7 +14,7 @@ const HelloWorldSceneAR = () => {
   function onInitialized(state: any, reason: ViroTrackingReason) {
     console.log("onInitialized", state, reason);
     if (state === ViroTrackingStateConstants.TRACKING_NORMAL) {
-      setText("Hello World!");
+      setText("Hello World");
     } else if (state === ViroTrackingStateConstants.TRACKING_UNAVAILABLE) {
       // Handle loss of tracking
     }
@@ -24,7 +24,7 @@ const HelloWorldSceneAR = () => {
     <ViroARScene onTrackingUpdated={onInitialized}>
       <ViroText
         text={text}
-        scale={[0.5, 0.5, 0.5]}
+        scale={[0.1, 0.5, 0.5]}
         position={[0, 0, -1]}
         style={styles.helloWorldTextStyle}
       />
