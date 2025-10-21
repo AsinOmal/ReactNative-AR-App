@@ -16,7 +16,13 @@ const InitialScene = () => {
     },
   });
 
-  
+  ViroAnimations.registerAnimations({
+    rotate: {
+      duration: 2500,
+      properties: { rotateX: "+=90", rotateY: "+=90" },
+    },
+  });
+
   return (
     <ViroARScene>
       {/* <ViroText
@@ -31,6 +37,7 @@ const InitialScene = () => {
         width={2}
         materials={["wood"]}
         position={[0, 0, -1]}
+        animation={{ name: "rotate", loop: true, run: true }}
         scale={[0.2, 0.2, 0.2]}
       />
     </ViroARScene>
