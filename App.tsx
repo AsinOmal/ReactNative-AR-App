@@ -7,6 +7,8 @@ import {
   ViroAnimations,
   Viro3DObject,
   ViroAmbientLight,
+  ViroARTrackingTargets,
+  ViroARImageMarker,
 } from "@reactvision/react-viro";
 import React, { useState } from "react";
 import { View, Text, TouchableOpacity } from "react-native";
@@ -18,6 +20,17 @@ const InitialScene = (props: any) => {
   const [cubeScale, setCubeScale] = useState([[0.2, 0.2, 0.2]]);
   const [rotation, setRotation] = useState([0, 0, 0]);
   const data = props.sceneNavigator.viroAppProps;
+
+  const clearObjects = () => {
+    setObject("");
+  };
+
+  ViroARTrackingTargets.createTargets({
+    carImage: {
+      source: require("./assets/porshe.jpeg"),
+      physicalWidth: 0.5, //! Real world width in meters
+    },
+  });
 
   ViroMaterials.createMaterials({
     wood: {
@@ -55,11 +68,31 @@ const InitialScene = (props: any) => {
       setRotation(currentRotation);
     }
   };
+
+  const anchorFound = () => {
+    console.log("Anchor/Image detected");
+  };
+
   return (
     <ViroARScene>
+      <ViroARImageMarker
+        target="carImage"
+        onAnchorFound={console.log(anchorFound)}
+      >
+        <Viro3DObject
+          source={require("./assets/porshe911.glb")}
+          type="GLB"
+          rotation={rotation}
+          position={position}
+          scale={carScale}
+          onDrag={moveObject}
+          onRotate={rotateObject}
+          dragType="FixedToWorld"
+        />
+      </ViroARImageMarker>
       <ViroAmbientLight color="#ffffff" intensity={1000} />
 
-      {data.object === "skull" ? (
+      {/* {data.object === "skull" ? (
         <Viro3DObject
           source={require("./assets/porshe911.glb")}
           type="GLB"
@@ -80,21 +113,10 @@ const InitialScene = (props: any) => {
           scale={[0.2, 0.2, 0.2]}
           rotation={rotation}
           onDrag={moveObject}
-          onRotate={(rotateState: any, rotationFactor: any, source) => {
-            if (rotateState == 3) {
-              let currentRotation = [
-                rotation[0] - rotationFactor,
-                rotation[1] - rotationFactor,
-                rotation[2] - rotationFactor,
-              ];
-              console.log("current rottaion", currentRotation);
-              console.log("rotation factor", rotationFactor);
-              setRotation(currentRotation);
-            }
-          }}
+          onRotate={rotateObject}
           dragType="FixedToWorld"
         />
-      )}
+      )} */}
     </ViroARScene>
   );
 };
@@ -113,6 +135,14 @@ export default () => {
       <View style={styles.controlView}>
         <TouchableOpacity onPress={() => setObject("skull")}>
           <Text style={styles.text}>Display Porshe Car</Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity
+          onPress={() => {
+            setObject("");
+          }}
+        >
+          <Text style={styles.text}>Clear</Text>
         </TouchableOpacity>
 
         <TouchableOpacity onPress={() => setObject("tv")}>
