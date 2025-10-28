@@ -13,10 +13,10 @@ import { View, Text, TouchableOpacity } from "react-native";
 import { StyleSheet } from "react-native";
 
 const InitialScene = (props: any) => {
-  const [position, setPosition] = useState([0, 0, -0.5]);
+  const [position, setPosition] = useState([0, 0, -1]);
   const [carScale, setCarScale] = useState([0.2, 0.2, 0.2]);
-  const [cubeScale, setCubeScale] = useState([[0.5, 0.5, 0.5]]);
-  const [rotation, setRotation] = useState([0, 0, -5]);
+  const [cubeScale, setCubeScale] = useState([[0.2, 0.2, 0.2]]);
+  const [rotation, setRotation] = useState([0, 0, 0]);
   const data = props.sceneNavigator.viroAppProps;
 
   ViroMaterials.createMaterials({
@@ -42,6 +42,19 @@ const InitialScene = (props: any) => {
   const moveObject = (newPosition: any) => {
     console.log(newPosition);
   };
+
+  const rotateObject = (rotateState: any, rotationFactor: any, source) => {
+    if (rotateState == 3) {
+      let currentRotation = [
+        rotation[0] - rotationFactor,
+        rotation[1] - rotationFactor,
+        rotation[2] - rotationFactor,
+      ];
+      console.log("current rottaion", currentRotation);
+      console.log("rotation factor", rotationFactor);
+      setRotation(currentRotation);
+    }
+  };
   return (
     <ViroARScene>
       <ViroAmbientLight color="#ffffff" intensity={1000} />
@@ -54,8 +67,8 @@ const InitialScene = (props: any) => {
           position={position}
           scale={carScale}
           onDrag={moveObject}
+          onRotate={rotateObject}
           dragType="FixedToWorld"
-          animation={{ name: "rotatex", loop: true, run: true }}
         />
       ) : (
         <ViroBox
@@ -63,10 +76,22 @@ const InitialScene = (props: any) => {
           length={3}
           width={3}
           materials={["metal"]}
-          position={[0, 0, -1]}
-          animation={{ name: "rotateBox", loop: true, run: true }}
+          position={position}
           scale={[0.2, 0.2, 0.2]}
+          rotation={rotation}
           onDrag={moveObject}
+          onRotate={(rotateState: any, rotationFactor: any, source) => {
+            if (rotateState == 3) {
+              let currentRotation = [
+                rotation[0] - rotationFactor,
+                rotation[1] - rotationFactor,
+                rotation[2] - rotationFactor,
+              ];
+              console.log("current rottaion", currentRotation);
+              console.log("rotation factor", rotationFactor);
+              setRotation(currentRotation);
+            }
+          }}
           dragType="FixedToWorld"
         />
       )}
