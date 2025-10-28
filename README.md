@@ -1,85 +1,146 @@
-# Viro Starter Kit
+# ViroReact AR Playground
 
-This is a new [**React Native**](https://reactnative.dev) project, set up with `@reactvision/react-viro`.
+A simple AR app built with React Native and ViroReact. You can load 3D models, move them, resize them, and trigger animations. It also supports marker-based AR using reference images.
 
-## How to Install Viro in an existing project?
+---
 
-If you are integrating ViroReact into an existing project, have a look at our [Installation instructions](https://viro-community.readme.io/docs/installation-instructions).
+## Features
 
-## Getting Started
+* Custom 3D models and textures.
+* Animations attached to models.
+* Object interaction:
 
-> **Note**: Make sure you have completed the [React Native - Environment Setup](https://reactnative.dev/docs/environment-setup) instructions. Stop before you get to the `Creating a new application` section; we have done that for you!
+  * Drag to reposition.
+  * Pinch to scale.
+* Marker-based AR using a reference image.
+* Runs on a physical Android or iOS device.
 
-## Step 1: Install Dependencies
+---
 
-```bash
-npm install
+## Requirements
+
+You need:
+
+* A physical smartphone. AR will not work on emulators.
+* React Native environment setup:
+  [https://reactnative.dev/docs/environment-setup](https://reactnative.dev/docs/environment-setup)
+* Node.js and npm installed.
+
+---
+
+## Installation
+
+1. Clone the repo:
+
+   ```bash
+   git clone <your-repository-link>
+   cd <project-folder>
+   ```
+
+2. Install dependencies:
+
+   ```bash
+   npm install
+   ```
+
+3. iOS only: install CocoaPods:
+
+   ```bash
+   cd ios
+   pod install
+   cd ..
+   ```
+
+4. Start the Metro bundler:
+
+   ```bash
+   npm start
+   ```
+
+5. Connect your phone with USB and run:
+
+   | Platform | Command                        |
+   | -------- | ------------------------------ |
+   | Android  | `npx react-native run-android` |
+   | iOS      | `npx react-native run-ios`     |
+
+If setup is correct, the AR scene will load on your phone.
+
+---
+
+## Editing the App
+
+Main AR logic is inside:
+
+```
+App.tsx
 ```
 
-### iOS only:
+To test code changes:
 
-```bash
-cd ios
-pod install
-cd ..
+* Android: Press R key twice in Metro terminal.
+* iOS: Shake device and select Reload.
+
+---
+
+## Project Structure
+
+```
+project/
+├── ios/
+├── android/
+├── src/
+│   ├── scenes/        # AR scenes
+│   ├── assets/        # Models, textures, markers
+│   └── App.tsx
+└── package.json
 ```
 
-## Step 2: Start the Metro Server
+---
 
-First, you will need to start **Metro**, the JavaScript _bundler_ that ships _with_ React Native.
+## 3D Assets
 
-To start Metro, run the following command from the _root_ of your React Native project:
+Place models and textures under:
 
-```bash
-npm start
+```
+src/assets/
 ```
 
-## Step 3: Start your Application
+Supported formats:
 
-> **Warning**: Due to limitations of the Apple Simulator and the Android Emulator, you must run your project on a physical device.
+* .obj with .mtl for textures
+* .glb or .gltf
 
-Let Metro Bundler run in its _own_ terminal. Open a _new_ terminal from the _root_ of your React Native project. Run the following command to start your _Android_ or _iOS_ app:
+If you add new assets, update imports inside the AR scene.
 
-```bash
-# iOS
-npx react-native run-ios
-# Android
-npx react-native run-android
+---
+
+## Marker AR Setup
+
+Reference image files go into:
+
+```
+src/assets/markers/
 ```
 
-If everything is set up _correctly_, you should see your new app running on you device.
+Update marker paths in AR scene code. Use clear, high-contrast images for better detection.
 
-#### Install CocoaPods
+---
 
-```bash
-cd ios
-pod install
-cd ..
-```
+## Troubleshooting
 
-```bash
-# using npm
-npm run ios
+* If nothing appears: check device permissions for camera.
+* If the app fails to install: confirm Android SDK or iOS setup.
+* If models appear tiny or huge: adjust scale property in code.
 
-# OR using Yarn
-yarn ios
-```
+---
 
-If everything is set up _correctly_, you should see your new app running in your _Android Emulator_ or _iOS Simulator_ shortly provided you have set up your emulator/simulator correctly.
+## Resources
 
-This is one way to run your app — you can also run it directly from within Android Studio and Xcode respectively.
+React Native setup:
+[https://reactnative.dev/docs/environment-setup](https://reactnative.dev/docs/environment-setup)
 
-## Step 4: Modifying your App
+ViroReact documentation:
+[https://viro-community.readme.io/](https://viro-community.readme.io/)
 
-Now that you have successfully run the app, let's modify it.
-
-1. Open `App.tsx` in your text editor of choice and edit some lines.
-2. For **Android**: Press the <kbd>R</kbd> key twice or select **"Reload"** from the **Developer Menu** (<kbd>Ctrl</kbd> + <kbd>M</kbd> (on Window and Linux) or <kbd>Cmd ⌘</kbd> + <kbd>M</kbd> (on macOS)) to see your changes!
-
-## Next Steps
-
-Check out our [documentation](https://viro-community.readme.io/) for guides, examples, and more!
-
-## Need help?
-
-[Reach us in Discord.](https://discord.gg/YfxDBGTxvG) or submit an issue!
+---
