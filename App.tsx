@@ -13,7 +13,12 @@ import { View, Text, TouchableOpacity } from "react-native";
 import { StyleSheet } from "react-native";
 
 const InitialScene = (props: any) => {
+  const [position, setPosition] = useState([0, 0, -0.5]);
+  const [carScale, setCarScale] = useState([0.2, 0.2, 0.2]);
+  const [cubeScale, setCubeScale] = useState([[0.5, 0.5, 0.5]]);
+  const [rotation, setRotation] = useState([0, 0, -5]);
   const data = props.sceneNavigator.viroAppProps;
+
   ViroMaterials.createMaterials({
     wood: {
       diffuseTexture: require("./assets/woodtexture.jpg"),
@@ -34,15 +39,22 @@ const InitialScene = (props: any) => {
     },
   });
 
+  const moveObject = (newPosition: any) => {
+    console.log(newPosition);
+  };
   return (
     <ViroARScene>
       <ViroAmbientLight color="#ffffff" intensity={1000} />
+
       {data.object === "skull" ? (
         <Viro3DObject
           source={require("./assets/porshe911.glb")}
           type="GLB"
-          position={[0.5, -5, -1.5]}
-          scale={[0.2, 0.2, 0.2]}
+          rotation={rotation}
+          position={position}
+          scale={carScale}
+          onDrag={moveObject}
+          dragType="FixedToWorld"
           animation={{ name: "rotatex", loop: true, run: true }}
         />
       ) : (
@@ -51,9 +63,11 @@ const InitialScene = (props: any) => {
           length={3}
           width={3}
           materials={["metal"]}
-          position={[-1, 0, -2]}
+          position={[0, 0, -1]}
           animation={{ name: "rotateBox", loop: true, run: true }}
           scale={[0.2, 0.2, 0.2]}
+          onDrag={moveObject}
+          dragType="FixedToWorld"
         />
       )}
     </ViroARScene>
